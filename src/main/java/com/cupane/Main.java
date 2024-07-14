@@ -12,6 +12,8 @@ public class Main {
 
         String RESET = "\u001B[0m";
         String BLUE = "\u001B[36m";
+        String RED = "\u001B[31m";
+
 
         Options options = new Options();
 
@@ -35,7 +37,8 @@ public class Main {
 //            System.out.println("Options: ");
 //            System.out.println(commandLine.getOptionValue("input"));
         } catch (ParseException e) {
-            System.err.println("Parsing failed: " + e.getMessage());
+            System.err.println(RED + "Parsing failed: " + e.getMessage() + RESET);
+            System.exit(1);
         }
 
         for (Path path: cli.getPaths()) {
@@ -48,7 +51,7 @@ public class Main {
                     if (line.contains(cli.getPattern())) System.out.println(lineNumber + " " + BLUE + line + RESET);
                 }
             } catch (IOException e) {
-                System.err.println("Could not read file: " + path.toString());
+                System.err.println(RED + "Could not read file: " + path.toString() + RESET);
             }
         }
 
