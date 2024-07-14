@@ -10,7 +10,7 @@ import java.nio.file.Path;
 public class Main {
     public static void main(String[] args) {
 
-        final String VERSION = "1.0.1";
+        final String VERSION = "1.0.2";
 
         String RESET = "\u001B[0m";
         String BLUE = "\u001B[36m";
@@ -19,14 +19,17 @@ public class Main {
         Options options = new Options();
         HelpFormatter helpFormatter = new HelpFormatter();
         boolean showLineNumbers = false;
+        long startTime = 0;
 
         Option help = new Option("h", "help", false, "print this message");
         Option version = new Option("v", "version", false, "print version information");
         Option displayLineNumber = new Option("n", "line-number", false, "print the line number");
+        Option time = new Option("t", "time", false, "print running time");
 
         options.addOption(help);
         options.addOption(version);
         options.addOption(displayLineNumber);
+        options.addOption(time);
 
         CommandLineParser parser = new DefaultParser();
 
@@ -45,6 +48,7 @@ public class Main {
                 if (commandLine.getArgList().isEmpty()) throw new ParseException("No arguments given");
                 if (commandLine.getArgList().size() < 2) throw new ParseException("Two arguments must be given");
                 if (commandLine.hasOption(displayLineNumber)) showLineNumbers = true;
+                if (commandLine.hasOption(time)) startTime = System.currentTimeMillis();
             }
 
             cli = new Cli(commandLine.getArgList());
@@ -78,6 +82,7 @@ public class Main {
 
                     }
                 }
+                if (startTime != 0) System.out.println("Total running time: " + (System.currentTimeMillis() - startTime) + " milliseconds");
             } catch (IOException e) {
                 System.err.println(RED + "Could not read file: " + path.toString() + RESET);
             }
